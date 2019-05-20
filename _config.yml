@@ -9,12 +9,12 @@ exclude:
   - "/vendor/"
 
 # Site settings
-title: Centrarium
-subtitle: "A simple yet classy theme for your Jekyll website or blog"
+title: "Push Stone's blog"
+subtitle: ""
 email: dadadamarine@gmail.com
-name: Jeong Minseok
+name: "Minseok Jeong"
 description: >
-  A simple yet classy theme for your Jekyll website or blog.
+  테스트는, 자신을 작성한 만큼만 기능을 보장해준다. 그러니까 테스트를 작성하는 일은 각 기능에 대한 보증서를 모으는 작업이다.
 # Base URL of site (i.e. /blog). It should always start with a slash,
 # and never end with a slash. Set it to a blank value if hosting at the
 # root of your server.
@@ -41,6 +41,12 @@ jekyll-archives:
     tag: '/tag/:name/'
 
 # Disqus comments
+
+comments:
+  provider               : "disqus"
+  disqus:
+    shortname            : pushstone # Short-name
+
 # disqus_shortname: bencentra
 
 # Google analytics
@@ -72,29 +78,29 @@ descriptions:
 social:
   - name: Twitter
     icon: twitter
-    username: TheBenCentra
-    url: https://twitter.com/TheBenCentra
+    username: 
+    url: 
     desc: Follow me on Twitter
     share: true
 
   - name: Facebook
     icon: facebook
-    username: thebencentra
-    url:
+    username: dadadamarine
+    url: https://www.facebook.com/minseok.jeong.14
     desc: Friend me on Facebook
     share: true
 
   - name: GitHub
     icon: github
-    username: bencentra
+    username: dadadamarine
     url: https://github.com/dadadamairne
     desc: Fork me on GitHub
     share: false
 
   - name: LinkedIn
     icon: linkedin
-    username: Ben Centra
-    url: https://www.linkedin.com/pub/ben-centra/47/769/60a
+    username: 
+    url: 
     desc: Connect with me on LinkedIn
     share: true
 
