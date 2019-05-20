@@ -4,13 +4,22 @@ title: About
 permalink: /about/
 ---
 
-<img src="{{ site.baseurl }}/assets/profile-placeholder.gif" title="Profile Picture" class="profile">
+<img src="{{ site.baseurl }}/assets/profile.jpeg" title="Profile Picture" class="profile">
 
-Centrarium is a custom theme for Jekyll, made by [Ben Centra][bencentra] for his own blog. He'd be humbled if you liked it enough to use it as well! Installation and configuration instructions can be found in the [GitHub repository](https://github.com/bencentra/centrarium).
+**Spring과 Junit, Clean Code와 코드리뷰를 사랑하는 병아리 개발자입니다.**
 
-This page is a good place to write about yourself, your project, your product, or whatever it is your site is for. You can replace the image above, or you can get rid of it entirely. 
 
-You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/). And you can find the source code for Jekyll at [github.com/jekyll/jekyll](https://github.com/jekyll/jekyll)
+스스로에게 항상 상기시키기 위해 아래의 문구를 기록합니다.
+
+테스트는, 테스트를 작성한 만큼만 기능을 보장해준다. 그러니까 테스트를 작성하는 일은 각 기능에 대한 보증서를 모으는 작업이다.
+- 2019, 네이버 핵데이 리뷰 중
+
+코드리뷰를 사랑하고 즐깁니다. "더 나은 코드를 가지고 대화하는 것" 자체가 좋은것 같습니다.
+- 2019, 자기소개서 중
+
+바둑에서 신의 한수에 도달하기 위해 라이벌이 필요한 것 처럼, 코드리뷰는 클린코드의 끝을 추구하는 방법이라고 생각합니다. 
+- 2019, 자기소개서 중
+
 
 [centrarium]: https://github.com/bencentra/centrarium
 [bencentra]: http://bencentra.com
