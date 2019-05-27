@@ -1,0 +1,321 @@
+---
+title: "[기술면접] Apache vs Nginx 그리고 Tomcat"
+author: Push's tone
+layout: post
+date: 2019-05-20 05:25:28
+categories: Computer Science
+---
+
+
+
+# 개요 
+
+WAS, WAR, JAR, Web Server 등등 웹 서버에 관련해서 수많은 용어들이 사용되고 있다. 이에 대해 정확한 동작방식을 알고자합니다. 가장 먼저 WAS와 웹서버의 차이, Apache와 Nginx의 차이를 정리하기 위해 글을 작성합니다.
+
+> 이 글은 다른 블로그의 내용들을 수집하고 정리한 글입니다. 훌륭한 설명을 여과없이 작성한 경우가 많기에 출처에 대한 표기에 신중을 기하고 있습니다.
+
+
+
+# 개념정리
+
+
+
+## HTTP 웹서버(Web Server)란?
+
+1) Web Server의 정의 
+
+​	\- HTTP 요청을 처리할 수 있는 웹 서버
+
+​	\- Client의 CRUD request들을 처리한 후 Response를 보내는 역할을 웹 서버가 하게 된다.
+
+​	\- 정적인 데이터를 처리하는 용도로, 이경우 WAS보다 빠르고 안정적입니다.
+
+​    \- Web Application이 실행 될 수 있는 환경을 제공하는 Server 입니다.
+
+​    \- WAS의 역활은 컴퓨터의 OS(Window, Linux 등등)와 비슷한 역활을 합니다. 
+
+​	\- 예로 Apache, Nginx가 있습니다.
+
+![img](https://t1.daumcdn.net/cfile/tistory/99D535335A06CAF125)
+
+## WAS(Web Application Server)란?
+
+  1) WAS의 정의
+
+​	- Web Server와 Wev Container의 결합입니다. 
+
+​	\- 다양한 기능을 컨테이너에 구현하여 다양한 역할을 수행 할 수 있습니다.
+
+​	\- 내부 프로그램을 통해 결과를 만드는, 동적인 데이터를 처리하는 서버(DB사용, 데이터 조작 등)로 사용됩니다.
+
+  2) WAS(Tomcat)의 구성
+
+​    (1) Web server
+
+​      \- Client로부터는 요청을 받고 , 정적인 결과를 생성하여 응답을 해준다. 
+
+​      \- Client가 동적인 웹 페이지를 요청 할시 Web Container를 통해 동적 페이지 결과를 생성하여 응답한다.
+
+​    (2) Web Container
+
+​      \- 동적으로 페이지를 생성하여, Web Server에 전달해 준다.
+
+​      \- 동적으로 페이지를 처리함으로써 사용자 마다 다른 결과로 응답이 가능하다.
+
+
+
+3) WAS의 동작 방식
+
+​    \- WAS(ex : Apache Tomcat)은 정작 페이지 처리 및 동적 페이지 처리를 모두 할수 있다.
+
+![img](https://t1.daumcdn.net/cfile/tistory/99C0F04D5B93977F03)
+
+
+
+## Container내부 구조
+
+### [서블릿 컨테이너란?]([https://seodh007.tistory.com/entry/%EC%84%9C%EB%B8%94%EB%A6%BF%EC%9D%B4%EB%9E%80](https://seodh007.tistory.com/entry/서블릿이란))
+
+웹 서버는 서블릿 자체를 실행하지 못하므로, **JVM을 내장한 컨테이너라는** 서블릿 실행환경이 필요합니다.
+
+서블릿 컨테이너는 서블릿을 동작 시킬수 있는 환경을 제공하는 서버 프로그램입니다. 즉 HTTP 요청을 받아서 해당 서블릿을 동작을 시키고 그 결과를 사용자의 브라우저로 전달을 해줄 수 있는 기능을 제공합니다.
+
+보통 컨테이너라고 하는 이유는 서블릿 프레임워크 안에서 동작을 하고 서블릿이 동작할 수 있는 환경을 제공해주며, 기타 필요한 작업등을 제공해주기 때문에 그렇게 얘기를 합니다. 즉 HTTP 파라미터 파싱 및 결과 전달 컨트롤, Forwarding, Redirecting 등의 기능을 컨테이너에서 제공을 해줍니다.
+
+이때 서블릿 개발자는 자신이 만든 서블릿을 이 컨테이너에 등록을 하게 되고, 실제 동작을 컨테이너가 알아서 하게 되기 때문에 사용되는 언어입니다.
+
+서블릿 컨테이너 안에 Servlet 객채가 존재하는 것입니다.
+
+
+
+### [Servlet(Server + Applet)](https://uroa.tistory.com/68?category=657568)
+
+서블릿은 컨테이너 안에서 실행되는 자바코드입니다. 그리고 동적 HTML 컨텐츠를 생성하는 주체입니다. 플랫폼 중립적인 .class파일로 컴파일된 채로 존재합니다. request가 생기면, 이 byte[]코드는 컨테이너에 Load됩니다.
+
+서블릿 객체의 라이프 사이클에서 서블릿 클래스가 클래스 로더에 의해 컨테이너에 동적으로 로드된다는 것을 알 수 있습니다. 각 요청은 자체 스레드에 있고 서블릿 객체는 동시에 여러 스레드를 처리 할 수 있습니다 (스레드가 안전하지 않음). 더 이상 사용되지 않으면 JVM에서 GC의 대상이 됩니다.
+
+다른 Java 프로그램과 마찬가지로 서블릿도 JVM에서 실행됩니다. HTTP 요청의 복잡성을 처리하기 위해 서블릿 컨테이너가 제공됩니다. 서블릿 컨테이너는 서블릿의 생성, 실행 및 삭제를 담당합니다.
+
+![img](https://t1.daumcdn.net/cfile/tistory/256ED73D570C60690A)
+
+<br>
+
+더 정확한 이해를 위해 Servlet이 초기화 되는 과정을 확인합니다. 서블릿 초기화는 아래와 같은 과정을 거칩니다.
+
+![img](https://t1.daumcdn.net/cfile/tistory/214A7541570C78A436)
+
+<br>
+
+Init, Service, Destroy와 같은 Callback이 각 시점에 불립니다. init은 서블릿이 메모리에 로드 될때 실행됩니다. 또한 Destory도 마찬가지로 서블릿이 메모리에서 언로드되기 전에 수행되는 Callback입니다. Service메소드는 HTTP Method 타입에 따라 doGet 또는 doPost를 호출합니다.
+
+주의 : 초기화된 서블릿은 클라이언트 요청이 있을때마다 Thread를 생성하여 병렬적으로 Service를 수행합니다. 즉 **서블릿 객체는 여러개 생성되지 않습니다.**
+
+요약하자면, Servlet은 Was를 통해 컴파일 된 후 메모리에 적재 되어 클라이언트의 HTTP Get, Post등의 요청을 처리하는 자바 프로그램입니다.
+
+![img](https://mblogthumb-phinf.pstatic.net/data33/2008/6/2/245/11_yswon72.jpg?type=w800)
+
+[**Servlet 생성 체크의 기준**](https://lazymankook.tistory.com/69)
+
+Servlet은 서버에 매칭되는 URL마다 하나 씩 존재하며 init -> service(요청 마다 반복) -> destory의 생명주기를 가진다. Servlet은 WAS의 Servlet Container에 존재하며 사용자가 요청하면 해당되는 URL(web.xml 등으로 설정)에 매핑되는 Servlet의 함수(service -> doGet, doPost)를 호출한다.
+
+
+
+**동작순서** 
+
+1. 웹 서버는 HTTP request를 서블릿 컨테이너에 위임한다.
+2. 컨테이너는 Servlet을 검색해서, 존재하지 않을경우 컨테이너의 주소 공간에 동적으로 서블릿을 로드한다. 즉 객체(인스턴스)를 생성합니다.
+3. 컨테이너는 Servlet 초기화를 위해 서블릿의 init()메서드를 호출한다.
+4. 컨테이너는 Servlet의 service() 메서드를 호출하여 doPost, doGet을 통해 서블릿이 HTTP request를 처리하도록 합니다.(컨텐츠 생성)
+   이때, Servlet인스턴스는 컨테이너의 주소 공간에 남아있으며, 다른 HTTP request들을 처리할 수 있습니다.
+5. 웹 서버는 이렇게 생성된 동적인 결과를 클라이언트에 전송합니다.
+
+
+
+> [**JVM이 다른 일반 자바클래스와 servlet을 실행하는 방법의 차이가 무엇인가요?**](https://stackoverflow.com/questions/43657778/how-does-the-jvm-execute-a-servlet-compared-with-a-regular-java-class)
+>
+> JVM이 서블릿을 실행하는 방식은 다른 자바클래스를 실행할때와 동일하다. 다만 환경의 차이가 있다. 서블릿은 다른 클래스처럼 `main()` 메서드에 의해 직접적으로 호출되지 않고, 컨테이너(Apache Tomcat같은)에 의해 호출됩니다. 컨테이너는 web.xml과 같은 configuration을 읽고, classLoader를 사용해서 서블릿을 로드합니다.
+> 대부분의 경우 서블릿 컨테이너는 한개의 JVM을 실행하지만, 여러개의 JVM을 사용하는 방법도 있습니다.
+>
+> 
+>
+> [**Applet vs Servlet**]([https://seodh007.tistory.com/entry/%EC%84%9C%EB%B8%94%EB%A6%BF%EC%9D%B4%EB%9E%80](https://seodh007.tistory.com/entry/서블릿이란))
+
+[실제 서블릿의 코드예제]([https://ko.wikipedia.org/wiki/%EC%9E%90%EB%B0%94_%EC%84%9C%EB%B8%94%EB%A6%BF](https://ko.wikipedia.org/wiki/자바_서블릿)), [서블릿의  doGet코드 예제](https://gmlwjd9405.github.io/2018/11/04/servlet-vs-jsp.html)
+
+
+
+
+
+## 웹 서버와 JVM
+
+Spring 어플리케이션을 graalVM이라는 JVM으로 동작하기 위해서 톰캣을 튜닝하는 방법과, default JVM등을 알아봅니다.
+
+### Tomcat Tuning
+
+Tomcat 의 경우 실행할때에 옵션을 줄수있습니다.
+
+다만 이 옵션이 Tomcat 을 실행할때 다른 프로세스와 다르게 CATALINA_OPTS 라는 변수로 추가를 해줘야 합니다.
+
+옵션 예시
+
+```
+- server : Server HotSpot JVM을 사용하는 옵션입니다. Server HotSpot JVM은 Desktop용 Appkication을 구동하는데 유리하고, 최적화(Optimization)에 필요한 모든 과정을 최대한으로 수행합니다. Application의 시작시간은 느리지만, 일정 시간이 흐르면 Client HotSpot JVM에 비해 훨씬 뛰어난 성능을 보장합니다. 
+※ Jdk 1.5부터는 Server-Class머신인 경우에는 -server 옵션이 기본값이며,  Server-Class머신이란 2장 이상의 CPU와 2G이상의 메모리를 갖춘 머신을 의미합니다. 
+
+```
+
+> **JVM Tuning**
+>
+> 제일 먼저 해야할일은 JVM 모드를 server 모드로 전환하는 것이다. JVM 내의 hotspot 컴파일러도 클라이언트 애플리케이션이나 서버 애플리케이션이냐 에 따라서 최적화 되는 방법이 다르다.
+>
+> 그리고 메모리 배치 역시 클라이언트 애플리케이션(MS 워드와같은)의 경우 버튼이나 메뉴는 한번 메모리에 로드 되면, 애플리케이션이 끝날 때 까지 메모리에 잔존하기 때문에 Old 영역이 커야 하지만, 서버의 경우 request를 받아서 처리하고 응답을 주고 빠져서 소멸되는 객체들이 대부분이기 때문에, New 영역이 커야 한다.
+>
+
+https://heowc.tistory.com/3
+
+[Apache Tomcat Tuning (아파치 톰캣 튜닝 가이드)](https://bcho.tistory.com/788)
+
+
+
+
+
+
+
+### WAS with GraalVM
+
+정보를 더 찾아보자… 
+
+
+
+
+
+
+
+## Servlet VS DispatcherServlet(Spring MVC)
+
+### DispatcherServlet이란?
+
+`DispatcherServlet` acts as [front controller](https://en.wikipedia.org/wiki/Front_controller) for Spring based web applications. It provides a mechanism for request processing where actual work is performed by configurable, delegate components. It is inherited from [javax.servlet.http.HttpServlet](https://tomcat.apache.org/tomcat-7.0-doc/servletapi/javax/servlet/http/HttpServlet.html), it is typically configured in the `web.xml`file.
+
+A web application can define any number of `DispatcherServlet` instances. Each servlet will operate in its own namespace, loading its own application context with mappings, handlers, etc. Only the root application context as loaded by [ContextLoaderListener](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/context/ContextLoaderListener.html), if any, will be shared. In most cases, applications have only single `DispatcherServlet` with the context-root URL`(/)`, that is, all requests coming to that domain will be handled by it. 
+이 설정에 관한 xml을 통한 설정, configuration을 통한 설정방법은 다음을 참고한다. [Spring DispatcherServlet tutorial – how it works?](https://howtodoinjava.com/spring5/webmvc/spring-dispatcherservlet-tutorial/)
+
+`DispatcherServlet` uses Spring configuration classes to discover the delegate components it needs for request mapping, view resolution, exception handling etc.
+
+
+
+`Servlet은 서버에 매칭되는 URL마다 하나 씩 존재하며 init -> service(요청 마다 반복) -> destory의 생명주기를 가진다. Servlet은 WAS의 Servlet Container에 존재하며 사용자가 요청하면 해당되는 URL(web.xml 등으로 설정)에 매핑되는 Servlet의 함수(service -> doGet, doPost)를 호출한다.`
+
+![img](https://t1.daumcdn.net/cfile/tistory/2236F14757BBD25119)
+
+DispatcherServlet은 SpringMVC가 제공하는 서블릿이다.
+
+> DispatcherServlet의 상속을 추적할 경우 실제로 javax.servlet의 GeneriServlet 추상 클래스를 구현하고 있다.
+>
+> ![image-20190527194149656](/Users/dadadamarine/Desktop/study/blog/dadadamarine.github.io/assets/images/image-20190527194149656.png)
+>
+> 또한. 위의 설명대로 init(), destroy(), service()를 선언하고 있다.
+>
+> <br>
+>
+> ![image-20190527194438818](/Users/dadadamarine/Desktop/study/blog/dadadamarine.github.io/assets/images/image-20190527194438818.png)
+> 
+> 또한 이를 상속한 HttpServlet 추상객체에선 doPost(), doGet() 등의 메서드를 구현하고 있음을 확인 할 수 있다.
+
+
+
+**그럼 WAS안에 다른 Servlet과 Dispatcher-Servlet이 공존하는건가?**
+
+이때, Dispatcher servlet의 의미가 이해에 도움이 될것 같다. dispatch는 "보내다" 라는 뜻을 가지고 있으며, HTTP 프로토콜로 들어오는 모든 요청을 중앙 집중식으로 처리해주는 프론트 컨트롤러 이다.
+
+요청이 들어오면, 서블릿 컨테이너가(톰캣과 같은, 같..진 않지만 유사하게 보도록 한다.) 요청을 받는다. 이때 제일 앞에서 컨테이너 안으로 들어오는 요청을 처리하는 **프론트 컨트롤러** 로 Spring에서 Dispatcher servlet을 정의하였다.
+
+
+
+>[**Servlet 생성 체크의 기준**](https://lazymankook.tistory.com/69)
+>
+>Servlet은 서버에 매칭되는 URL마다 하나 씩 존재하며 init -> service(요청 마다 반복) -> destory의 생명주기를 가진다. Servlet은 WAS의 Servlet Container에 존재하며 사용자가 요청하면 해당되는 URL(web.xml 등으로 설정)에 매핑되는 Servlet의 함수(service -> doGet, doPost)를 호출한다.
+
+
+
+`Dispatcher Servlet의 경우 서블릿 컨테이너에서 URI기준으로 서블릿을 매핑해줄때 "/ ,즉 root에 해당하는 request"를 Dispatcher servlet이라는 서블릿으로 보낸다는 글을 본적이 있습니다. (확인할 것!)
+즉, URI별 여러 서블릿이 생성되는 대신 모든 요청을 Dispatcher Servlet하나가 처리하게 되는것이죠.`
+
+
+
+이런 상황속에서, 정적 데이터 가져오는 요청마저 Dispatcher Servlet이 컨트롤러로 넘겨버리는 경우가 생긴다. 이에 대해 Dispatcher Servlet에서 해당 요청에 대한 컨트롤러를 찾을 수 없는경우, 2차적으로 설정된 경로에서 자원을 탐색해주는 방식도 지원한다. (<mvc:resources />)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\3. 아파치와 톰캣의 차이점 
+
+=> **웹서버와 웹애플리케이션의 차이**
+
+WAS(톰캣)만 쓰지 않고 아파치를 쓰는 이유는? 목적이 다르다. (웹 컨테이너의 유무)
+
+웹서버는 정적인 데이터를 처리하는 서버. 이미지나 단순 HTML을 처리하는 서버라면 웹 서버가 적당하며 빠르고 안정적이다.
+
+WAS는 동적인 데이터를 처리하는 서버. DB연결, 데이터 조작등과 같은 처리는 WAS를 활용해야 한다. 
+
+아파치(80 포트) , 톰캣(8080 포트)
+
+
+
+
+
+
+
++) 그렇다면 왜 톰캣을 아파치 톰캣이라고 부르나? 아파치 톰캣 = 아파치 + 톰캣 ?
+
+
+
+톰캣을 그냥 톰캣이라고 하면되지, 왜 헷갈리게 아파치 톰캣이라고 하느냐?
+
+톰캣에서 아파치의 기능(웹서비스데몬, Httpd)를 포함하고 있기 때문에. 그렇지만 톰캣이 아파치의 모든 기능을 포함하고 있는 것은 아니다.
+
+
+
++) [보통 현업에서는 톰캣 앞에 아파치를 놓는다 그 이유는? (by 토비님)]([http://toby.epril.com/?p=1125](http://toby.epril.com/?p=1125))
+
+많은 개발자들이 애플리케이션 서버로 톰캣을 사용하는 경우에 스태틱 파일(css, js, html, 이미지)은 톰캣 앞에 아파치 웹 서버(Httped)를 두어서 처리하게 하는 것이 좋다고 생각한다. 외부 요청은 일단 Apache Httpd가 받고, 톰캣 내에서 처리할 자바 애플리케이션만 톰캣으로 다시 전달해서 처리하고 그 외의 리소스는 Apache Httpd가 직접 처리하게 만들어야 성능이 좋다고 생각한다. 자바로 만든 서버인 톰캣은 스태틱 파일 처리에서 Apache Httpd만 못하다는 것이 그 이유이다.
+
+
+
+하지만 톰캣과 Httped의 개발자에 따르면 이는 개발자들이 잘못 알고 있는 미신이다. 아직도 톰캣 3를 사용하고 있는 것이 아니라면 말이다.
+
+톰캣은 5.5부터 Httpd의 native모듈을 사용해서 스태틱파일을 처리하는 기능을 제공한다. 이 경우 Httpd와 톰캣이 같은 모듈을 사용하는 셈이니 성능에서 차이가 날 이유가 없다. 실제 테스트 한 결과를 봐도 톰캣에서 아파치 Native 모듈을 사용하는 것이 순수하게 아파치 Httpd만 사용하는 것과 비교해서 성능이 전혀 떨어지지 않는다. 
+
+ 따라서 **단지 스태틱 파일 처리의 성능만을 위해서라면 굳이 톰캣 앞에 Apache Httpd를 두는 것은 불필요 하다. 오히려 메모리만 많이 먹고 관리부담은 커지고, 불필요한 부하만 걸릴 뿐이다.**
+
+ **물론 Httpd의 다른 기능이나 모듈을 사용해야 할 필요가 있다면 그때는 Httpd를 앞에 두고 사용해야겠지만.** 
+
+**예를 들어 하나의 서버에서 PHP애플리케이션과 자바 애플리케이션을 함께 사용하거나, Httpd 서버를 간단한 로드밸런싱을 위해서 사용해야 하는 경우라면 Httpd를 앞에 두고 톰캣을 연결해서 사용하도록 하면 될 것이다.**
+
+
+
+https://limmmee.tistory.com/4
+
+https://uroa.tistory.com/68?category=657568
+
+http://www.pearsonitcertification.com/articles/article.aspx?p=29786&seqNum=4
+
+[**서블릿?**](https://dzone.com/articles/what-servlet-container)
+
+[JAVA 서블릿의 기본](https://m.blog.naver.com/PostView.nhn?blogId=yswon72&logNo=51544546&proxyReferer=https%3A%2F%2Fwww.google.com%2F&view=img_2)
+
+https://gmlwjd9405.github.io/2018/12/20/spring-mvc-framework.html
+
+[Spring MVC와 Dispatcher Servlet](https://lazymankook.tistory.com/69)
+

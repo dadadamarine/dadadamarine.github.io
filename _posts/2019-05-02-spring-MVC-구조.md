@@ -60,6 +60,12 @@ Spring RESTful의 구조는 다음과 같다. [출처](<https://jeong-pro.tistor
 
 
 
+같은 내용이지만 약간 다른 설명 Handler Adapter의 기능에 대해 설명하는 차이가 있어 첨부함
+
+출처 : https://lazymankook.tistory.com/69
+
+![img](https://t1.daumcdn.net/cfile/tistory/99C231465B504E531A)
+
 ### DispatcherServlet
 
 ** DispatcherServlet의 구성**
@@ -96,7 +102,7 @@ ContextLoaderListener는 root-context.xml에 등록된 SpringContainer를 구동
 
 
 
-Spring MVC는 Servlet들의 생명주기를 관리하는 Servlet Contrainer에 포함된 Servlet중 하나이다. [참조](<https://jojoldu.tistory.com/28>), [서블릿 컨테이너의 역할과 서블릿의 생명주기](<https://minwan1.github.io/2017/10/08/2017-10-08-Spring-Container,Servlet-Container/>)
+Spring MVC는 Servlet들의 생명주기를 관리하는 Servlet Contrainer에 포함된 Servlet중 하나이다. [참조](https://jojoldu.tistory.com/28), [서블릿 컨테이너의 역할과 서블릿의 생명주기](<https://minwan1.github.io/2017/10/08/2017-10-08-Spring-Container,Servlet-Container/>)
 
 
 
