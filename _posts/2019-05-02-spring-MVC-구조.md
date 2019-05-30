@@ -1,4 +1,5 @@
 ---
+
 title: "[Spring/Project] Spring WEb MVC 구조"
 date: 2019-05-02 02:25:28 -0400
 categories: Java/Spring
@@ -68,15 +69,35 @@ Spring RESTful의 구조는 다음과 같다. [출처](<https://jeong-pro.tistor
 
 ### DispatcherServlet
 
-** DispatcherServlet의 구성**
+**DispatcherServlet의 구성**
 
 Spring MVC framework의 DispatcherServlet은 단순히 request를 전달하는 것 이상의 기능을 한다. Spring IoC 컨테이너와 완전이 합쳐져서 스프링의 특징등을 이용할 수 있게 해준다. [출처1](<https://minwan1.github.io/2018/05/28/2018-05-28-spring-mvc/>), [출처2](<https://minwan1.github.io/2017/10/08/2017-10-08-Spring-Container,Servlet-Container/>)
 
 
 
+<br>
+
+#### Application context
+
+여기에서 Dispatcher 서블릿이 생성되면서 주의할 점이 하나 있다. 디스패처 서블릿이 생성되면서 WebapplicationContext가 생성된다. 하나는 dispatch에 의해 생성되는 WebApplicationContext 그리고 스프링에 ContextLoader에 의해 생성되는 Root WebapplicationContext가 있다. 이 둘은 부모 자식 관계이다. 구조는 아래와 같을 수 있다.
+
+위와같이 구성이유는 2개이상의 DispatchServlet을 등록을하게 되면 RootWebApplicationContext를 공유하기위해서 사용할 수 있다.
+
+<br>
+
 ![img](https://i.imgur.com/IUf4orm.png)
 
+
+
+<br>
+
+
+
 ![img](https://i.imgur.com/PlDF42i.png)
+
+
+
+<br>
 
 ContextLoaderListener는 root-context.xml에 등록된 SpringContainer를 구동한다. 이때 비즈니스 로직과, DAO등의 객체들(Web환경에 독립적인 객체들)이 생성되어 Root WebApplicationContext에 빈으로 등록된다. DispatcherServlet은 WebApplicationContext를 생성하여 자신이 직접 사용하는 컨트롤러를 포함한 웹 관련 빈을   등록한다. 
 
@@ -113,3 +134,7 @@ Spring MVC는 Servlet들의 생명주기를 관리하는 Servlet Contrainer에 �
 ![img](https://t1.daumcdn.net/cfile/tistory/276A9339579B5CDB2C)
 
 WebApplicaionContext는  ApplicationContext를 상속받은 인터페이스이다. 웹 어플리케이션을 위한 ApplicationContext로 사용되고, ApplicationContext에 추가적으로 Bean 영역(bean scope)를 정의하고 있다. [출처](<https://jojoldu.tistory.com/28>)
+
+
+
+<https://minwan1.github.io/2018/11/21/2018-11-21-jsp-springboot-%EB%8F%99%EC%9E%91%EA%B3%BC%EC%A0%95/>
